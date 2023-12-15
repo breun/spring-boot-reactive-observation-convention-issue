@@ -15,7 +15,7 @@ class DemoApplicationTests {
 	@Test
 	void fails_on_startup_when_no_unique_ServerRequestObservationConvention_is_present() {
 		assertThatException()
-				.isThrownBy(() -> SpringApplication.run(ApplicationWithTwoCustomServerRequestObservationConventionBeans.class))
+				.isThrownBy(() -> SpringApplication.run(ApplicationWithTwoCustomServerRequestObservationConventionBeans.class, "--server.port=0"))
 				.withRootCauseInstanceOf(NoUniqueBeanDefinitionException.class);
 	}
 
