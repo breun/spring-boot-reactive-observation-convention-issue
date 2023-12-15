@@ -1,22 +1,25 @@
 package com.example.demo;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.server.reactive.observation.DefaultServerRequestObservationConvention;
 import org.springframework.http.server.reactive.observation.ServerRequestObservationConvention;
+import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
-import static org.assertj.core.api.Assertions.assertThatException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DemoApplicationTests {
 
 	@Test
-	void fails_on_startup_when_no_unique_ServerRequestObservationConvention_is_present() {
-		assertThatException()
-				.isThrownBy(() -> SpringApplication.run(ApplicationWithTwoCustomServerRequestObservationConventionBeans.class))
-				.withRootCauseInstanceOf(NoUniqueBeanDefinitionException.class);
+	void should_not_silently_use_DefaultServerRequestObservationConvention_when_other_ServerRequestObservation_beans_are_defined() {
+		ConfigurableApplicationContext context = SpringApplication.run(ApplicationWithTwoCustomServerRequestObservationConventionBeans.class, "--server.port=0");
+		HttpWebHandlerAdapter httpWebHandlerAdapter = context.getBean(HttpWebHandlerAdapter.class);
+		assertThat(httpWebHandlerAdapter.getObservationConvention()).isNotInstanceOf(DefaultServerRequestObservationConvention.class);
+		context.close();
 	}
 
 	@SpringBootApplication
