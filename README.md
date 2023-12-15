@@ -6,4 +6,6 @@ With Spring Boot 3.1.6, a Spring WebFlux application with Micrometer Observation
 However, with Spring Boot 3.2.0 this behavior changed, and now you don't get a startup failure when multiple `ServerRequestObservationConvention` beans are defined, and silently `DefaultServerRequestObservationConvention` is used.
 I think this is unexpected behavior, which should be restored to what it was in Spring Boot 3.1.6.
 
-The tests in the `spring-boot-3.1` and `spring-boot-3.2` branches of this project illustrate this issue. 
+The tests in the `spring-boot-3.1` and `spring-boot-3.2` branches of this project illustrate this issue.
+
+This issue has been reported on GitHub [here](https://github.com/spring-projects/spring-boot/issues/38829).
